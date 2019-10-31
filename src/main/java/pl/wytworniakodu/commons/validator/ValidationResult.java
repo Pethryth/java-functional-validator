@@ -1,22 +1,20 @@
 package pl.wytworniakodu.commons.validator;
 
-import java.util.function.Supplier;
-
 public interface ValidationResult {
 
     boolean isValid();
 
-    default String errorMessage() {
+    default String validatorErrorMessage() {
         return "";
     }
 
-    default void ifInvalid(EmptyValidationConsumer consumer) {
+    default void ifInvalid(final ValidationConsumer consumer) {
         if (!isValid()) {
             consumer.accept();
         }
     }
 
-    default void ifValid(EmptyValidationConsumer consumer) {
+    default void ifValid(final ValidationConsumer consumer) {
         if (isValid()) {
             consumer.accept();
         }

@@ -5,6 +5,8 @@ import java.util.Objects;
 public class NotBlankValidator extends Validator<String> {
 
 
+    private static final String ERROR_MESSAGE = " is empty";
+
     public NotBlankValidator() {
         super((param) -> Objects.nonNull(param.getValue()) && !param.getValue().isEmpty());
     }
@@ -14,19 +16,9 @@ public class NotBlankValidator extends Validator<String> {
         return () -> true;
     }
 
+
     @Override
-    public ValidationResult fail(final ValidationInput param) {
-        return new ValidationResult() {
-
-            @Override
-            public boolean isValid() {
-                return false;
-            }
-
-            @Override
-            public String errorMessage() {
-                return param.getFieldName() + " is empty";
-            }
-        };
+    protected String errorMessage(final String fieldName) {
+        return fieldName + ERROR_MESSAGE;
     }
 }

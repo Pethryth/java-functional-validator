@@ -18,7 +18,8 @@ class ValidatorTest {
                 .test(new ValidationInput<>("a b c", FIELD_NAME));
         Assertions.assertFalse(result.isValid());
         Assertions.assertEquals(FIELD_NAME + NoWhiteSpacesValidator.IS_NOT_PASSED_NO_WHITE_SPACES_VALIDATOR + "\n"
-                + FIELD_NAME + CapitalLettersValidator.IS_NOT_PASSED_CAPITAL_LETTERS_VALIDATOR, result.errorMessage());
+                        + FIELD_NAME + CapitalLettersValidator.IS_NOT_PASSED_CAPITAL_LETTERS_VALIDATOR,
+                result.validatorErrorMessage());
     }
 
     @Test
@@ -29,7 +30,7 @@ class ValidatorTest {
                 .test(new ValidationInput<>("A B C", FIELD_NAME));
         Assertions.assertFalse(result.isValid());
         Assertions.assertEquals(FIELD_NAME + NoWhiteSpacesValidator.IS_NOT_PASSED_NO_WHITE_SPACES_VALIDATOR,
-                result.errorMessage());
+                result.validatorErrorMessage());
     }
 
     @Test
@@ -38,7 +39,7 @@ class ValidatorTest {
                 .or(new CapitalLettersValidator())
                 .test(new ValidationInput<>("A B C", FIELD_NAME));
         Assertions.assertTrue(result.isValid());
-        Assertions.assertEquals("", result.errorMessage());
+        Assertions.assertEquals("", result.validatorErrorMessage());
     }
 
     @Test
@@ -48,7 +49,7 @@ class ValidatorTest {
                 .test(new ValidationInput<>("a b c", FIELD_NAME));
         Assertions.assertFalse(result.isValid());
         Assertions.assertEquals(FIELD_NAME + CapitalLettersValidator.IS_NOT_PASSED_CAPITAL_LETTERS_VALIDATOR,
-                result.errorMessage());
+                result.validatorErrorMessage());
     }
 
     @Test
@@ -60,7 +61,7 @@ class ValidatorTest {
                 .test(new ValidationInput<>("A B C", FIELD_NAME));
         Assertions.assertFalse(result.isValid());
         Assertions.assertEquals(FIELD_NAME + NoWhiteSpacesValidator.IS_NOT_PASSED_NO_WHITE_SPACES_VALIDATOR,
-                result.errorMessage());
+                result.validatorErrorMessage());
     }
 
     @Test
@@ -71,7 +72,7 @@ class ValidatorTest {
                 .and(new NoWhiteSpacesValidator())
                 .test(new ValidationInput<>("ABC", FIELD_NAME));
         Assertions.assertTrue(result.isValid());
-        Assertions.assertEquals("", result.errorMessage());
+        Assertions.assertEquals("", result.validatorErrorMessage());
     }
 }
 
@@ -89,25 +90,10 @@ class NoWhiteSpacesValidator extends Validator<String> {
         });
     }
 
-    @Override
-    public ValidationResult ok(final ValidationInput param) {
-        return () -> true;
-    }
 
     @Override
-    public ValidationResult fail(final ValidationInput param) {
-        return new ValidationResult() {
-
-            @Override
-            public boolean isValid() {
-                return false;
-            }
-
-            @Override
-            public String errorMessage() {
-                return param.getFieldName() + IS_NOT_PASSED_NO_WHITE_SPACES_VALIDATOR;
-            }
-        };
+    protected String errorMessage(String fieldName) {
+        return fieldName + IS_NOT_PASSED_NO_WHITE_SPACES_VALIDATOR;
     }
 }
 
@@ -125,24 +111,8 @@ class CapitalLettersValidator extends Validator<String> {
     }
 
     @Override
-    public ValidationResult ok(final ValidationInput param) {
-        return () -> true;
-    }
-
-    @Override
-    public ValidationResult fail(final ValidationInput param) {
-        return new ValidationResult() {
-
-            @Override
-            public boolean isValid() {
-                return false;
-            }
-
-            @Override
-            public String errorMessage() {
-                return param.getFieldName() + IS_NOT_PASSED_CAPITAL_LETTERS_VALIDATOR;
-            }
-        };
+    public String errorMessage(final String fieldName) {
+        return fieldName + IS_NOT_PASSED_CAPITAL_LETTERS_VALIDATOR;
     }
 }
 
@@ -160,23 +130,7 @@ class SmallLettersValidator extends Validator<String> {
     }
 
     @Override
-    public ValidationResult ok(final ValidationInput param) {
-        return () -> true;
-    }
-
-    @Override
-    public ValidationResult fail(final ValidationInput param) {
-        return new ValidationResult() {
-
-            @Override
-            public boolean isValid() {
-                return false;
-            }
-
-            @Override
-            public String errorMessage() {
-                return param.getFieldName() + IS_NOT_PASSED_SMALL_LETTERS_VALIDATOR;
-            }
-        };
+    protected String errorMessage(String fieldName) {
+        return fieldName + IS_NOT_PASSED_SMALL_LETTERS_VALIDATOR;
     }
 }

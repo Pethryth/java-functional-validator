@@ -15,8 +15,25 @@ public abstract class Validator<K> implements ValidatorFunction<K> {
         return predicate.test(param) ? ok(param) : fail(param);
     }
 
-    public abstract ValidationResult ok(ValidationInput<K> param);
+    public ValidationResult ok(final ValidationInput<K> param) {
+        return () -> true;
+    }
 
-    public abstract ValidationResult fail(ValidationInput<K> param);
+    public ValidationResult fail(final ValidationInput<K> param) {
+        return new ValidationResult() {
+
+            @Override
+            public boolean isValid() {
+                return false;
+            }
+
+            @Override
+            public String validatorErrorMessage() {
+                return errorMessage(param.getFieldName());
+            }
+        };
+    }
+
+    protected abstract String errorMessage(String fieldName);
 
 }

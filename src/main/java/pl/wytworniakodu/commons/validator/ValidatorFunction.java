@@ -5,7 +5,7 @@ public interface ValidatorFunction<PARAM> {
 
     ValidationResult test(ValidationInput<PARAM> param);
 
-    default ValidatorFunction<PARAM> and(ValidatorFunction<PARAM> other) {
+    default ValidatorFunction<PARAM> and(final ValidatorFunction<PARAM> other) {
         return (param) -> {
             ValidationResult firstResult = this.test(param);
             if (firstResult.isValid()) {
@@ -22,14 +22,14 @@ public interface ValidatorFunction<PARAM> {
                 }
 
                 @Override
-                public String errorMessage() {
-                    return firstResult.errorMessage() + "\n" + secondResult.errorMessage();
+                public String validatorErrorMessage() {
+                    return firstResult.validatorErrorMessage() + "\n" + secondResult.validatorErrorMessage();
                 }
             };
         };
     }
 
-    default ValidatorFunction<PARAM> or(ValidatorFunction<PARAM> other) {
+    default ValidatorFunction<PARAM> or(final ValidatorFunction<PARAM> other) {
         return (param) -> {
             ValidationResult firstResult = this.test(param);
             return firstResult.isValid() ? firstResult : other.test(param);

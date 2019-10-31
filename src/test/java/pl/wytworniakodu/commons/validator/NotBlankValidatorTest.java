@@ -10,13 +10,13 @@ class NotBlankValidatorTest {
     void shouldReturnErrorMessage() {
         ValidationResult result = new NotBlankValidator().test(new ValidationInput<>("", "name"));
         Assertions.assertFalse(result.isValid());
-        Assertions.assertEquals(result.errorMessage(), "name is empty");
+        Assertions.assertEquals(result.validatorErrorMessage(), "name is empty");
     }
 
     @Test
     void shouldReturnValidResult() {
         ValidationResult result = new NotBlankValidator().test(new ValidationInput<>("Wytwornia Kodu", "name"));
         Assertions.assertTrue(result.isValid());
-        Assertions.assertEquals(result.errorMessage(), "");
+        Assertions.assertEquals(result.validatorErrorMessage(), "");
     }
 }
