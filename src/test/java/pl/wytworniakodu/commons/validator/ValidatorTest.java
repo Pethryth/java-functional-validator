@@ -92,7 +92,7 @@ class NoWhiteSpacesValidator extends Validator<String> {
 
 
     @Override
-    protected String errorMessage(String fieldName) {
+    protected String errorMessage(final String fieldName) {
         return fieldName + IS_NOT_PASSED_NO_WHITE_SPACES_VALIDATOR;
     }
 }
@@ -130,7 +130,7 @@ class SmallLettersValidator extends Validator<String> {
     }
 
     @Override
-    protected String errorMessage(String fieldName) {
+    protected String errorMessage(final String fieldName) {
         return fieldName + IS_NOT_PASSED_SMALL_LETTERS_VALIDATOR;
     }
 }
