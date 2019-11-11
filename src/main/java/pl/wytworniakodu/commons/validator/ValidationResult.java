@@ -1,5 +1,7 @@
 package pl.wytworniakodu.commons.validator;
 
+import java.util.function.Consumer;
+
 public interface ValidationResult {
 
     boolean isValid();
@@ -8,15 +10,15 @@ public interface ValidationResult {
         return "";
     }
 
-    default void ifInvalid(final ValidationConsumer consumer) {
+    default void ifInvalid(final Consumer<ValidationResult> consumer) {
         if (!isValid()) {
-            consumer.accept();
+            consumer.accept(this);
         }
     }
 
-    default void ifValid(final ValidationConsumer consumer) {
+    default void ifValid(final Consumer<ValidationResult> consumer) {
         if (isValid()) {
-            consumer.accept();
+            consumer.accept(this);
         }
     }
 }
